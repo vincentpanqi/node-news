@@ -1,0 +1,34 @@
+{
+  "name":           "nodenews",
+  "main":           "./server.js",
+  "version":        "0.0.1",
+  "description":    "Node news",
+  "keywords":       ["news"],
+  "author":         "Lei Zongmin <leizongmin@gmail.com>",
+  "contributors": [
+    {"name": "Lei Zongmin", "email": "leizongmin@gmail.com"}
+  ],
+  "repository": {
+    "type":         "git",
+    "url":          "git://github.com/leizongmin/node-news.git"
+  },
+  "licenses":     [{
+    "type":         "MIT",
+    "url":          "https://raw.github.com/leizongmin/node-news/master/MIT-License"
+  }],
+  "bugs":{
+    "url":          "https://github.com/leizongmin/node-news/issues"
+  },
+  "engines": {
+    "node":         ">= 0.6.0"
+  },
+  "dependencies":	{
+    "tomato":       "*",
+    "redis":        "~0.8",
+    "mysql":        "~2.0",
+    "moment":       "~2.0"
+  },
+  "scripts": {
+    "test":         "mocha -t 5000"
+  }
+}

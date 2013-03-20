@@ -1,0 +1,21 @@
+{% include "header" %}
+
+{% paginate posts by 30 %}
+  <!-- News List -->
+  <div class="news">
+  {% for post in posts %}
+  <div class="item">
+    <span class="index">{{query_page | minus: 1 | times: 30 | plus: forloop.index}}.</span>
+    <a href="{% if post.url %}{{post.url | escape}}{% else %}/posts/{{post.id}}{% endif %}" target="_blank" class="title">{{post.title | escape}}</a><br>
+    {% if post.content %}<span class="content">{{post.content | truncate: 60}}{% if post.content.length > 60 %}...{% endif %}</span><br>{% endif %}
+    <span class="time">{{post.timestamp | format_time}}</span> |
+    <a href="/posts/{{post.id}}" class="discuss">discuss</a>
+  </div>
+    {% if forloop.last %}<a href="/posts?p={{query_page | plus: 1}}" class="more">More</a>{% endif %}
+  {% else %}
+    Did not yield any results.
+  {% endfor %}
+  </div>
+{% endpaginate %}
+
+{% include "footer" %}

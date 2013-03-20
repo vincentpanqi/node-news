@@ -1,0 +1,76 @@
+body {
+  font-family: "Microsoft yahei", "Helvetica Neue", "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
+  max-width: 980px;
+  margin: 0 auto;
+}
+header {
+  background-color: #CCC;
+  padding: 6px 0;
+  margin-bottom: 20px;
+}
+header .title {
+  font-weight: bold;
+  color: #333;
+  font-size: 14pt;
+  display: inline-block;
+  margin-left: 34px;
+}
+footer {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 11pt;
+  border-top: 4px solid #CCC;
+  padding-top: 10px;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.main {
+  background: #f8f8f8;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#eaeaea));
+  padding: 6px 2px;
+}
+.news {
+  font-size: 11pt;
+  color: #828282;
+}
+.news .item {
+  margin: 10px 0;
+  padding: 0 12px;
+}
+.news .item .index {
+  display: inline-block;
+  width: 20px;
+}
+.news .item .title {
+  color: #000;
+}
+.news .item .title:visited {
+  color: #828282;
+  text-decoration: none;
+}
+.news .item .content {
+  margin-left: 24px;
+  display: inline-block;
+}
+.news .item .time {
+  display: inline-block;
+  margin-left: 24px;
+}
+.news .item .discuss {
+  color: #828282;
+}
+.news .more {
+  display: inline-block;
+  margin-left: 36px;
+  font-size: 11pt;
+  color: #000;
+  margin-top: 8px;
+}
+.news .more:visited {
+  color: #000;
+}
