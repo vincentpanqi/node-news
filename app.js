@@ -3,6 +3,7 @@ module.exports = function (worker, app, logger, config) {
   var path = require('path');
   var tinyliquid = require('tinyliquid');
   var newContext = tinyliquid.newContext;
+  var utils = require('./lib/utils');
 
 
   // Init cache & db connection
@@ -19,18 +20,19 @@ module.exports = function (worker, app, logger, config) {
 
   // -------------------- Register middleware ----------------------------------
   app.use(function (req, res, next) {
-    res.locals.context = newContext();
+    var context = res.locals.context = newContext();
+    if (req.session.user) context.setLocals('user', req.session.user);
     next();
   });
 
-  // Error Handler
-  app.use(function (err, req, res, next) {
-    var lines = String(err && err.stack).split(/\r?\n/);
+  // Render error page
+  var renderErrorPage = function (err, req, res, next) {
+    var lines = err instanceof Error ? err.stack.split(/\r?\n/) : [err];
     var c = res.locals.context || newContext();
     c.setLocals('error', lines[0]);
     c.setLocals('stack', lines.slice(1).join('\n'));
     res.render('error');
-  });
+  };
 
 
   //--------------------- Register router --------------------------------------
@@ -77,6 +79,28 @@ module.exports = function (worker, app, logger, config) {
     var post_id = req.params.post_id;
     var comment_id = req.params.comment_id;
     next();
+  });
+
+  // Login & Register & Logout
+  app.get('/login', function (req, res, next) {
+    res.render('login');
+  });
+  app.post('/login', function (req, res, next) {
+    var username = String(req.body.username);
+    var password = String(req.body.password);
+    db.getOne('users', {username: username}, function (err, user) {
+      if (err || !user) return renderErrorPage('User not exists!', req, res, next);
+      if (utils.validatePassword(password, user.password)) {
+        req.session.user = user;
+        res.redirect('/');
+      } else {
+        renderErrorPage('Incorrect password!', req, res, next);
+      }
+    });
+  });
+  app.all('/logout', function (req, res, next) {
+    req.session.user = null;
+    res.redirect('/');
   });
   
 };

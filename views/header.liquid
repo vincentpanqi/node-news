@@ -8,5 +8,19 @@
 <body>
   <div class="main">
     <header>
-      <span class="title">Node News</span>
+      <a href="/" class="title">Node News</a>
+      <nav>
+        <a href="/comments">Comments</a> |
+        <a href="/leaders">Leaders</a> |
+        <a href="/submit">Submit</a>
+      </nav>
+      <span class="right">
+        {% if user %}
+        <a href="/user/{{user.username}}">{{user.username}}</a> |
+        <a href="/logout">Logout</a>
+        {% else %}
+        <a href="/login">Login/Register</a>
+        {% endif %}
+      </span>
+      <span class="clear"></span>
     </header>

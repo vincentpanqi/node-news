@@ -1,0 +1,31 @@
+{% assign title = "Login / Register" %}
+{% include "header" %}
+
+<div class="login-page">
+  <div class="box">
+    <span class="title">Login</span>
+    <form method="post" action="/login">
+      <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+      <label for="l_username">username:</label>
+      <input type="text" name="username" id="l_username" class="input"><br>
+      <label for="l_password">password:</label>
+      <input type="password" name="password" id="l_password" class="input"><br>
+      <input type="submit" value="login" class="submit">
+    </form>
+  </div>
+  <div class="box">
+    <span class="title">Create Account</span>
+    <form method="post" action="/register">
+      <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+      <label for="r_username">username:</label>
+      <input type="text" name="username" id="r_username" class="input"><br>
+      <label for="r_password">password:</label>
+      <input type="password" name="password" id="r_password" class="input"><br>
+      <label for="r_email">email:</label>
+      <input type="text" name="email" id="r_email" class="input"> (optional)<br>
+      <input type="submit" value="create account" class="submit">
+    </form>
+  </div>
+</div>
+
+{% include "footer" %}
