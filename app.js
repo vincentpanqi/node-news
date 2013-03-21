@@ -36,7 +36,15 @@ module.exports = function (worker, app, logger, config) {
   app.get('/posts/:id', function (req, res, next) {
     var c = newContext();
     var id = req.params.id;
-    c.setLocals('post_id', id);
+    c.setLocals('query_post_id', id);
+    res.render('content', {context: c});
+  });
+  app.get('/posts/:id/:comment_id', function (req, res, next) {
+    var c = newContext();
+    var id = req.params.id;
+    c.setLocals('query_post_id', id);
+    var comment_id = req.params.comment_id;
+    c.setLocals('query_comment_id', comment_id);
     res.render('content', {context: c});
   });
   

@@ -15,6 +15,13 @@ exports.http = {
   }
 };
 
+exports.log = {
+  path:       './log',
+  interval:   2000,
+  level:      'debug',
+  output:     true
+};
+
 
 // Redis server
 exports.redis = {

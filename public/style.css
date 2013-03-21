@@ -17,7 +17,7 @@ header .title {
 }
 footer {
   margin-top: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
   text-align: center;
   font-size: 11pt;
   border-top: 4px solid #CCC;
@@ -37,10 +37,10 @@ a:hover {
 .news {
   font-size: 11pt;
   color: #828282;
+  padding: 0 12px;
 }
 .news .item {
   margin: 10px 0;
-  padding: 0 12px;
 }
 .news .item .index {
   display: inline-block;
@@ -53,24 +53,66 @@ a:hover {
   color: #828282;
   text-decoration: none;
 }
-.news .item .content {
+.news .item .text {
   margin-left: 24px;
   display: inline-block;
 }
-.news .item .time {
+.news .item .user {
   display: inline-block;
   margin-left: 24px;
+}
+.news .item .time {
+  display: inline-block;
 }
 .news .item .discuss {
   color: #828282;
 }
 .news .more {
   display: inline-block;
-  margin-left: 36px;
+  margin-left: 24px;
   font-size: 11pt;
   color: #000;
   margin-top: 8px;
 }
 .news .more:visited {
   color: #000;
+}
+.content {
+  margin: 10px 0;
+  padding: 0 12px;
+  font-size: 11pt;
+}
+.content h1 {
+  font-weight: normal;
+  font-size: 14pt;
+  margin-bottom: 0;
+}
+.content .user, .content .time {
+  display: inline-block;
+  color: #828282;
+}
+.content .text {
+
+}
+.comments {
+  margin: 60px 0 30px -30px;
+  padding: 0 12px;
+  font-size: 11pt;
+}
+.comments .item {
+  margin: 10px 0 10px 30px;
+}
+.comments .item .user {
+  margin: -2px;
+}
+.comments .item .user, .comments .item .time {
+  display: inline-block;
+  color: #828282;
+}
+.comments .item .text {
+  margin: 0;
+}
+.comments .item .reply {
+  color: #000;
+  text-decoration: underline;
 }

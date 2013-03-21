@@ -1,10 +1,18 @@
+{% assign title = post.title %}
 {% include "header" %}
-{% assign post = post_id | query_posts_content %}
+
 <div class="content">
   <h1>{{post.title}}</h1>
+  <span class="user">by {{post.user}}</span>
   <span class="time">{{post.timestamp | format_time}}</span>
-  <p class="content">{{post.content}}</p>
-  
+  <p class="text">{{post.content}}</p>
+</div>
+
+<div class="comments">
+{% for comment in comments %}
+  {% assign item = comment %}
+  {% include "snippet_comment" with item %}
+{% endfor %}
 </div>
 
 {% include "footer" %}

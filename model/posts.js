@@ -14,6 +14,7 @@ module.exports = function (cache, db, config) {
   // Or
   // {% assign posts = 30 | query_posts_list, query_page %}
   context.setAsyncFilter('query_posts_list', function (size, page, callback) {
+    // Get posts list
     db.getList('posts', page, size, {}, {timestamp: 'desc'}, function (err, list) {
       if (err) return callback(err);
 
@@ -30,25 +31,40 @@ module.exports = function (cache, db, config) {
         cList.forEach(function (item, i) {
           list[i].content = item;
         });
-        callback(null, list);
+        
+        // Get users
+        var ids = list.map(function (item) {
+          return parseInt(item.user_id);
+        });
+        cache.getList('users:', ids, function (id, callback) {
+          db.getOne('users', {id: id}, callback);
+        }, function (err, uList) {
+          if (err) return callback(err);
+          uList.forEach(function (item, i) {
+            list[i].user = item.username;
+          });
+
+          callback(null, list);
+        });
       });
     });
   });
 
   // Get post content
   // Example:
-  // {% assign post = post_id | query_posts_content %}
+  // {% assign post = query_post_id | query_posts_content %}
   // Or
   // {{post}}
   context.setAsyncFilter('query_posts_content', function (post_id, callback) {
     query_posts_content(post_id, callback);
   });
   context.setAsyncLocals('post', function (name, callback, context) {
-    var post_id = context.getLocals('post_id');
+    var post_id = context.getLocals('query_post_id');
     post_id = post_id && post_id[1];
     query_posts_content(post_id, callback);
   });
   var query_posts_content = function (post_id, callback) {
+    // Get specify post
     post_id = parseInt(post_id);
     cache.get('posts:', post_id, function (post_id, callback) {
       db.getOne('posts', {id: post_id}, callback);
@@ -64,9 +80,15 @@ module.exports = function (cache, db, config) {
         if (err) return callback(err);
         post.content = content;
 
-        // Get comments
+        // Get user
+        cache.get('users:', post.user_id, function (user_id, callback) {
+          db.getOne('users', {id: user_id}, callback);
+        }, function (err, user) {
+          if (err) return callback(err);
+          post.user = user.username;
 
-        callback(null, post);
+          callback(null, post);
+        });
       });
     });
   };
