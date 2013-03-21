@@ -1,0 +1,9 @@
+{% assign title = "Server Error" %}
+{% include "header" %}
+
+<div class="error">
+  <h1>{{error}}</h1>
+  <pre>{{stack}}</pre>
+</div>
+
+{% include "footer" %}

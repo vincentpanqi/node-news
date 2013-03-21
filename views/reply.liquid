@@ -1,0 +1,13 @@
+{% assign title = "add comment" %}
+{% include "header" %}
+
+{% include "snippet_reply" %}
+
+<div class="comments">
+{% for comment in comments %}
+  {% assign item = comment %}
+  {% include "snippet_comment" with item %}
+{% endfor %}
+</div>
+
+{% include "footer" %}

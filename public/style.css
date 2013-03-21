@@ -2,6 +2,7 @@ body {
   font-family: "Microsoft yahei", "Helvetica Neue", "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
   max-width: 980px;
   margin: 0 auto;
+  font-size: 11pt;
 }
 header {
   background-color: #CCC;
@@ -115,4 +116,30 @@ a:hover {
 .comments .item .reply {
   color: #000;
   text-decoration: underline;
+}
+.reply-box {
+  margin-left: 10px;
+}
+.reply-box textarea {
+  font-size: 11pt;
+  font-family: "Microsoft yahei", "Helvetica Neue", "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
+  width: 80%;
+  height: 100px;
+  border: 1px solid #AAA;
+  padding: 2px 6px;
+}
+.reply-box input {
+  font-size: 11pt;
+  font-family: "Microsoft yahei", "Helvetica Neue", "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
+}
+.error {
+  margin: 50px 10px;
+}
+.error h1 {
+  font-size: 14pt;
+}
+.error pre {
+  font-family: "Microsoft yahei", "Helvetica Neue", "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
+  color: #828282;
+  font-size: 11pt;
 }

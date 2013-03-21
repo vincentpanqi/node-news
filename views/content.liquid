@@ -10,6 +10,8 @@
   <p class="text">{{post.content}}</p>
 </div>
 
+{% include "snippet_reply" %}
+
 <div class="comments">
 {% for comment in comments %}
   {% assign item = comment %}

@@ -24,6 +24,7 @@
   },
   "dependencies":	{
     "tomato":       "*",
+    "xss":          "~0.0.3",
     "redis":        "~0.8",
     "mysql":        "~2.0",
     "moment":       "~2.0"
