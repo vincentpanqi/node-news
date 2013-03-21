@@ -87,7 +87,7 @@ a:hover {
   font-size: 14pt;
   margin-bottom: 0;
 }
-.content .user, .content .time {
+.content .user, .content .time, .content .link, .content .discuss {
   display: inline-block;
   color: #828282;
 }
@@ -105,7 +105,7 @@ a:hover {
 .comments .item .user {
   margin: -2px;
 }
-.comments .item .user, .comments .item .time {
+.comments .item .user, .comments .item .time, .comments .item .link {
   display: inline-block;
   color: #828282;
 }

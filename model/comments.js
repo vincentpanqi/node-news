@@ -47,7 +47,11 @@ module.exports = function (cache, db, config) {
 
       // Filter
       if (comment_id > 0) {
-        list = tree[comment_id] && tree[comment_id].childs;
+        if (tree[comment_id]) {
+          list = [tree[comment_id]];
+        } else {
+          list = [];
+        }
       } else {
         list = [];
         for (var i in tree) {

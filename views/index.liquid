@@ -10,7 +10,7 @@
     {% if post.content %}<span class="text">{{post.content | truncate: 60}}{% if post.content.length > 60 %}...{% endif %}</span><br>{% endif %}
     <span class="user">by {{post.user}}</span>
     <span class="time">{{post.timestamp | format_time}}</span> |
-    <a href="/posts/{{post.id}}" class="discuss">discuss</a>
+    <a href="/posts/{{post.id}}" class="discuss">{% if post.comment > 0 %}{{post.comment}} comment{% else %}discuss{% endif %}</a>
   </div>
     {% if forloop.last %}<a href="/posts?p={{query_page | plus: 1}}" class="more">More</a>{% endif %}
   {% else %}

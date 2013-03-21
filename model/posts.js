@@ -44,7 +44,20 @@ module.exports = function (cache, db, config) {
             list[i].user = item.username;
           });
 
-          callback(null, list);
+          // Get comment count
+          var ids = list.map(function (item) {
+            return parseInt(item.id);
+          });
+          cache.getList('posts:comment:', ids, function (id, callback) {
+            db.getCount('comments', {post_id: id}, callback);
+          }, function (err, cList) {
+            if (err) return callback(err);
+            cList.forEach(function (item, i) {
+              list[i].comment = item;
+            });
+
+            callback(null, list);
+          });
         });
       });
     });
@@ -87,7 +100,15 @@ module.exports = function (cache, db, config) {
           if (err) return callback(err);
           post.user = user.username;
 
-          callback(null, post);
+          // Get comment count
+          cache.get('posts:comment:', post_id, function (post_id, callback) {
+            db.getCount('comments', {post_id: post_id}, callback);
+          }, function (err, comment) {
+            if (err) return callback(err);
+            post.comment = comment;
+
+            callback(null, post);
+          });
         });
       });
     });

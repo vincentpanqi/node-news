@@ -1,5 +1,7 @@
 var tinyliquid = require('tinyliquid');
 
+exports.env = 'production';
+
 exports.worker = {
   size:   1
 };
