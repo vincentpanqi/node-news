@@ -20,9 +20,18 @@ module.exports = function (worker, app, logger, config) {
 
 
   // -------------------- Register middleware ----------------------------------
+  var USER_URL = ['/submit', '/reply'];
+  var checkUserURL = function (url) {
+    return USER_URL.indexOf(url) === -1 ? false : true;
+  };
+  // Init and login check
   app.use(function (req, res, next) {
     var context = res.locals.context = newContext();
-    if (req.session.user) context.setLocals('user', req.session.user);
+    if (req.session.user) {
+      context.setLocals('user', req.session.user);
+    } else if (checkUserURL(req.url)) {
+      return sendError('Please log in first!', req, res, next);
+    }
     next();
   });
 
@@ -75,11 +84,31 @@ module.exports = function (worker, app, logger, config) {
     res.render('reply');
   });
 
-  // Reply
+  // Submit & Reply
   app.post('/reply', function (req, res, next) {
-    var post_id = req.params.post_id;
-    var comment_id = req.params.comment_id;
-    next();
+    var post_id = parseInt(req.body.post_id || 0);
+    var comment_id = parseInt(req.body.comment_id || 0);
+    var text = xss(String(req.body.text || '').trim());
+    if (!(post_id > 0)) return sendError('Incorrect post id.', req, res, next);
+    if (!text) return sendError('Comment cannot be empty!', req, res, next);
+    if (!(comment_id > 0)) comment_id = 0;
+    var user_id = req.session.user.id;
+    db.insert('comments', {
+      post_id:    post_id,
+      parent_id:  comment_id,
+      user_id:    user_id,
+      content:    text,
+      timestamp:  Date.now() / 1000  
+    }, function (err, results) {
+      if (err) return sendError(err, req, res, next);
+      if (results.affectedRows < 1) return sendError('Add comment fail!', req, res, next);
+
+      // update cache
+      cache.incr('posts:comment:' + post_id);
+
+      // return to the origin url
+      res.redirect(req.header('referer') || '/');
+    });
   });
 
   // Login & Register & Logout
@@ -127,7 +156,7 @@ module.exports = function (worker, app, logger, config) {
         });
       });
     } else {
-      sendError('Username and password could not be empty!', req, res, next);
+      sendError('Username and password cannot be empty!', req, res, next);
     }
   });
 
