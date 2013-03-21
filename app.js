@@ -2,6 +2,7 @@ module.exports = function (worker, app, logger, config) {
   var fs = require('fs');
   var path = require('path');
   var tinyliquid = require('tinyliquid');
+  var xss = require('xss');
   var newContext = tinyliquid.newContext;
   var utils = require('./lib/utils');
 
@@ -26,7 +27,7 @@ module.exports = function (worker, app, logger, config) {
   });
 
   // Render error page
-  var renderErrorPage = function (err, req, res, next) {
+  var sendError = function (err, req, res, next) {
     var lines = err instanceof Error ? err.stack.split(/\r?\n/) : [err];
     var c = res.locals.context || newContext();
     c.setLocals('error', lines[0]);
@@ -89,12 +90,12 @@ module.exports = function (worker, app, logger, config) {
     var username = String(req.body.username);
     var password = String(req.body.password);
     db.getOne('users', {username: username}, function (err, user) {
-      if (err || !user) return renderErrorPage('User not exists!', req, res, next);
+      if (err || !user) return sendError('User not exists!', req, res, next);
       if (utils.validatePassword(password, user.password)) {
         req.session.user = user;
         res.redirect('/');
       } else {
-        renderErrorPage('Incorrect password!', req, res, next);
+        sendError('Incorrect password!', req, res, next);
       }
     });
   });
@@ -102,5 +103,32 @@ module.exports = function (worker, app, logger, config) {
     req.session.user = null;
     res.redirect('/');
   });
-  
+  app.post('/register', function (req, res, next) {
+    var username = xss(req.body.username || '');
+    var password = req.body.password || '';
+    var email = xss(req.body.email || '');
+    if (username && password) {
+      password = utils.encryptPassword(password);
+      db.getOne('users', {username: username}, function (err, user) {
+        if (user) return sendError('This username is already exists!', req, res, next);
+        user = {
+          username: username,
+          password: password,
+          email:    email,
+          timestamp: Date.now() / 1000
+        };
+        db.insert('users', user, function (err, results) {
+          if (err) return sendError(err, req, res, next);
+          if (results.affectedRows < 1) return sendError('Create account fail!', req, res, next);
+          // auto login
+          user.id = results.insertId;
+          req.session.user = user;
+          res.redirect('/');
+        });
+      });
+    } else {
+      sendError('Username and password could not be empty!', req, res, next);
+    }
+  });
+
 };
