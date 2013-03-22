@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>{{title | escape}}</title>
-    <link href="/public/style.css" rel="stylesheet">
+    {{"style.css" | asset_url | stylesheet_tag}}
   </head>
 <body>
   <div class="main">

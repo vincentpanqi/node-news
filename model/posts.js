@@ -5,6 +5,7 @@
 module.exports = function (cache, db, config) {
   var exports = module.exports;
   var context = config.http.engine.context;
+  var flow = require('bright-flow');
   
   // Posts list
   // Example:
@@ -18,36 +19,42 @@ module.exports = function (cache, db, config) {
     db.getList('posts', page, size, {}, {timestamp: 'desc'}, function (err, list) {
       if (err) return callback(err);
 
-      // Get contents
       var ids = list.map(function (item) {
         return parseInt(item.id);
       });
-      cache.getList('contents:', ids, function (id, callback) {
-        db.getOne('contents', {post_id: id}, function (err, data) {
-          callback(err, data && data.content);
-        });
-      }, function (err, cList) {
-        if (err) return callback(err);
-        cList.forEach(function (item, i) {
-          list[i].content = item;
-        });
-        
-        // Get users
-        var ids = list.map(function (item) {
-          return parseInt(item.user_id);
-        });
-        cache.getList('users:', ids, function (id, callback) {
-          db.getOne('users', {id: id}, callback);
-        }, function (err, uList) {
-          if (err) return callback(err);
-          uList.forEach(function (item, i) {
-            list[i].user = item.username;
-          });
+      var uids = list.map(function (item) {
+        return parseInt(item.user_id);
+      });
 
-          // Get comment count
-          var ids = list.map(function (item) {
-            return parseInt(item.id);
+      flow.parallel()
+        // Get contents
+        .do(function (done) {
+          cache.getList('contents:', ids, function (id, callback) {
+            db.getOne('contents', {post_id: id}, function (err, data) {
+              callback(err, data && data.content);
+            });
+          }, function (err, cList) {
+            if (err) return callback(err);
+            cList.forEach(function (item, i) {
+              list[i].content = item;
+            });
+            done();
           });
+        })
+        // Get users
+        .do(function (done) {
+          cache.getList('users:', uids, function (id, callback) {
+            db.getOne('users', {id: id}, callback);
+          }, function (err, uList) {
+            if (err) return callback(err);
+            uList.forEach(function (item, i) {
+              list[i].user = item.username;
+            });
+            done();
+          });
+        })
+        // Get comment count
+        .do(function (done) {
           cache.getList('posts:comment:', ids, function (id, callback) {
             db.getCount('comments', {post_id: id}, callback);
           }, function (err, cList) {
@@ -55,11 +62,13 @@ module.exports = function (cache, db, config) {
             cList.forEach(function (item, i) {
               list[i].comment = item;
             });
-
-            callback(null, list);
+            done();
           });
+        })
+        // End
+        .end(function () {
+          callback(null, list);
         });
-      });
     });
   });
 
@@ -84,33 +93,43 @@ module.exports = function (cache, db, config) {
     }, function (err, post) {
       if (err) return callback(err);
 
-      // Get content
-      cache.get('contents:', post_id, function (post_id, callback) {
-        db.getOne('contents', {post_id: post_id}, function (err, data) {
-          callback(err, data && data.content);
-        });
-      }, function (err, content) {
-        if (err) return callback(err);
-        post.content = content;
-
+      flow.parallel()
+        // Get content
+        .do(function (done) {
+          cache.get('contents:', post_id, function (post_id, callback) {
+            db.getOne('contents', {post_id: post_id}, function (err, data) {
+              callback(err, data && data.content);
+            });
+          }, function (err, content) {
+            if (err) return callback(err);
+            post.content = content;
+            done();
+          });
+        })
         // Get user
-        cache.get('users:', post.user_id, function (user_id, callback) {
-          db.getOne('users', {id: user_id}, callback);
-        }, function (err, user) {
-          if (err) return callback(err);
-          post.user = user.username;
-
-          // Get comment count
+        .do(function (done) {
+          cache.get('users:', post.user_id, function (user_id, callback) {
+            db.getOne('users', {id: user_id}, callback);
+          }, function (err, user) {
+            if (err) return callback(err);
+            post.user = user.username;
+            done();
+          });
+        })
+        // Get comment count
+        .do(function (done) {
           cache.get('posts:comment:', post_id, function (post_id, callback) {
             db.getCount('comments', {post_id: post_id}, callback);
           }, function (err, comment) {
             if (err) return callback(err);
             post.comment = comment;
-
-            callback(null, post);
+            done();
           });
+        })
+        // End
+        .end(function () {
+          callback(null, post);
         });
-      });
     });
   };
 

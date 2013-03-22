@@ -194,9 +194,9 @@ module.exports = function (worker, app, logger, config) {
     res.redirect('/');
   });
   app.post('/register', function (req, res, next) {
-    var username = xss(req.body.username || '');
+    var username = xss(req.body.username || '').trim();
     var password = req.body.password || '';
-    var email = xss(req.body.email || '');
+    var email = xss(req.body.email || '').trim();
     if (username && password) {
       password = utils.encryptPassword(password);
       db.getOne('users', {username: username}, function (err, user) {

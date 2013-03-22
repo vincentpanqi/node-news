@@ -24,6 +24,7 @@
   },
   "dependencies":	{
     "tomato":       "*",
+    "bright-flow":  "*",
     "xss":          "~0.0.3",
     "redis":        "~0.8",
     "mysql":        "~2.0",
