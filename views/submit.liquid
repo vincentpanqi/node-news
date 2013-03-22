@@ -1,0 +1,35 @@
+{% assign title = "Submit" %}
+{% include "header" %}
+
+<div class="submit-page">
+  <div class="box">
+    <span class="title">Submit</span>
+    <form method="post" action="/submit">
+      <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+      <table>
+        <tr>
+          <td class="field"><label for="s_title">Title:</label></td>
+          <td><input type="text" name="title" id="s_title" class="input"></td>
+        </tr>
+        <tr>
+          <td><label for="s_url">URL:</label></td>
+          <td><input type="text" name="url" id="s_url" class="input"></td>
+        </tr>
+        <tr>
+          <td><label for="s_text">Text:</label><br></td>
+          <td><textarea name="text" id="s_text" class="input"></textarea></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td><input type="submit" value="submit" class="submit"></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td class="explain">Leave url blank to submit a question for discussion.</td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+
+{% include "footer" %}

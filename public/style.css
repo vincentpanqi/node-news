@@ -199,3 +199,43 @@ a:hover {
   font-size: 11pt;
   font-family: "Microsoft yahei", "Helvetica Neue", "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
 }
+.submit-page {
+  margin: auto;
+  max-width: 600px;
+}
+.submit-page .box {
+  border: 1px solid #CCC;
+  display: block;
+  padding: 12px 30px;
+  margin: 30px 12px;
+}
+.submit-page .box .title {
+  font-weight: bold;
+  font-size: 14pt;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+.submit-page .box table {
+  width: 100%;
+}
+.submit-page .box .field {
+  width: 50px;
+}
+.submit-page .box .input {
+  border: 1px solid #AAA;
+  font-size: 11pt;
+  font-family: "Microsoft yahei", "Helvetica Neue", "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
+  padding: 2px 6px;
+  width: 95%;
+}
+.submit-page .box textarea {
+  height: 100px;
+}
+.submit-page .box .submit {
+  font-size: 11pt;
+  font-family: "Microsoft yahei", "Helvetica Neue", "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
+}
+.submit-page .box .explain {
+  color: #828282;
+  padding-top: 20px;
+}

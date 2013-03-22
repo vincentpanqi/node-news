@@ -30,7 +30,7 @@ module.exports = function (worker, app, logger, config) {
     if (req.session.user) {
       context.setLocals('user', req.session.user);
     } else if (checkUserURL(req.url)) {
-      return sendError('Please log in first!', req, res, next);
+      return res.redirect('/login');
     }
     next();
   });
@@ -85,6 +85,69 @@ module.exports = function (worker, app, logger, config) {
   });
 
   // Submit & Reply
+  app.get('/submit', function (req, res, next) {
+    res.render('submit');
+  });
+  app.post('/submit', function (req, res, next) {
+    var title = xss(String(req.body.title || '')).trim();
+    var url = xss(String(req.body.url || '')).trim();
+    var text = xss(String(req.body.text || '')).trim();
+    if (!title) return sendError('Title cannot be empty!', req, res, next);
+    var data = {
+      title:      title,
+      url:        url,
+      user_id:    req.session.user.id,
+      timestamp:  Date.now() / 1000
+    };
+    var updateCacheAndReturn = function () {
+      cache.set('posts:' + data.id, config.redis.ttl, data);
+      res.redirect('/');
+    };
+    var insertContent = function () {
+      if (text) {
+        db.delete('contents', {post_id: data.id}, function (err, content) {
+          db.insert('contents', {
+            post_id:    data.id,
+            content:    text,
+            timestamp:  data.timestamp
+          }, function (err, results) {
+            if (err) return sendError(err, req, res, next);
+            if (results.affectedRows < 1) return sendError('Submit fail!', req, res, next);
+            updateCacheAndReturn();
+          });
+        });
+      } else {
+        updateCacheAndReturn();
+      }
+    };
+    if (url) {
+      db.getOne('posts', {url: url}, function (err, post) {
+        // If the url is already exists, then update it
+        if (post) {
+          db.update('posts', {url: url}, data, function (err, results) {
+            if (err) return sendError(err, req, res, next);
+            if (results.affectedRows < 1) return sendError('Submit fail!', req, res, next);
+            data.id = post.id;
+            insertContent();
+          });
+        } else {
+          db.insert('posts', data, function (err, results) {
+            if (err) return sendError(err, req, res, next);
+            if (results.affectedRows < 1) return sendError('Submit fail!', req, res, next);
+            data.id = results.insertId;
+            insertContent();
+          });
+        }
+      });
+    } else {
+      db.insert('posts', data, function (err, results) {
+        if (err) return sendError(err, req, res, next);
+        if (results.affectedRows < 1) return sendError('Submit fail!', req, res, next);
+        data.id = results.insertId;
+        insertContent();
+      });
+    }
+  });
   app.post('/reply', function (req, res, next) {
     var post_id = parseInt(req.body.post_id || 0);
     var comment_id = parseInt(req.body.comment_id || 0);
@@ -102,10 +165,8 @@ module.exports = function (worker, app, logger, config) {
     }, function (err, results) {
       if (err) return sendError(err, req, res, next);
       if (results.affectedRows < 1) return sendError('Add comment fail!', req, res, next);
-
       // update cache
       cache.incr('posts:comment:' + post_id);
-
       // return to the origin url
       res.redirect(req.header('referer') || '/');
     });
@@ -158,6 +219,21 @@ module.exports = function (worker, app, logger, config) {
     } else {
       sendError('Username and password cannot be empty!', req, res, next);
     }
+  });
+
+  // Comments
+  app.get('/comments', function (req, res, next) {
+    sendError('还没有做呢！', req, res, next);
+  });
+
+  // Leaders
+  app.get('/leaders', function (req, res, next) {
+    sendError('还没有做呢！', req, res, next);
+  });
+
+  // User
+  app.get('/user/:username', function (req, res, next) {
+    sendError('还没有做呢！', req, res, next);
   });
 
 };
