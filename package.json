@@ -23,12 +23,14 @@
     "node":         ">= 0.6.0"
   },
   "dependencies":	{
-    "tomato":       "*",
     "bright-flow":  "*",
     "xss":          "~0.0.3",
+    "express":      "~3.1",
     "redis":        "~0.8",
     "mysql":        "~2.0",
-    "moment":       "~2.0"
+    "moment":       "~2.0",
+    "connect-redis":"~1.4",
+    "debug":        "~0.7"
   },
   "scripts": {
     "test":         "mocha -t 5000"

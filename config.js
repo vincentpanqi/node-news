@@ -1,25 +1,9 @@
-var tinyliquid = require('tinyliquid');
+var utils = require('./lib/utils');
 
 exports.env = 'production';
 
-exports.worker = {
-  size:   1
-};
-
 exports.http = {
   port:   8080,
-
-  engine: {
-    context:    tinyliquid.newContext({
-      filters:  require('./lib/template/filters'),
-      locals: {
-        config: exports,
-        title:  'Node News'
-      }
-    }),
-    customTags: require('./lib/template/tags')
-  },
-
   'session store':  'redis',
   'session config': {
     host:     '127.0.0.1',
