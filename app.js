@@ -1,10 +1,9 @@
 module.exports = function (worker, app, logger, config) {
   var fs = require('fs');
   var path = require('path');
-  var tinyliquid = require('tinyliquid');
-  var xss = require('xss');
-  var newContext = tinyliquid.newContext;
   var utils = require('./lib/utils');
+  var xss = utils.xss;
+  var newContext = utils.newContext;
 
 
   // Init cache & db connection

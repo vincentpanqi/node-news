@@ -11,13 +11,13 @@ exports.http = {
 
   engine: {
     context:    tinyliquid.newContext({
-      filters:  require('./lib/filters'),
+      filters:  require('./lib/template/filters'),
       locals: {
         config: exports,
         title:  'Node News'
       }
     }),
-    customTags: require('./lib/tags')
+    customTags: require('./lib/template/tags')
   },
 
   'session store':  'redis',
