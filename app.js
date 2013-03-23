@@ -97,6 +97,8 @@ app.configure(function () {
   app.use(app.router);
   app.use('/public', express.static(config.http['static path'], {maxAge: config.http['static maxage']}));
 
+  app.use(require('./lib/middleware/error')());
+
   // Register routes
   app.get('/', function (req, res, next) {
     res.redirect('/posts');
