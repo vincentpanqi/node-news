@@ -6,7 +6,6 @@
   <a href="/posts/{{post_id}}/{{id}}/reply" class="reply">reply</a>
 
   {% for comment in childs %}
-    {% assign item = comment %}
-    {% include "snippet_comment" with item %}
+    {% include "snippet_comment" with comment %}
   {% endfor %}
 </div>
