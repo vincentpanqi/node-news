@@ -22,6 +22,13 @@ var logger = nodenews.logger = utils.createLogger('nodenews', config.log);
 nodenews.db = require('./lib/data/db');
 nodenews.cache = require('./lib/data/cache');
 
+// Model
+var model = nodenews.model = {};
+model.users = require('./lib/model/users');
+model.comments = require('./lib/model/comments');
+model.contents = require('./lib/model/contents');
+model.posts = require('./lib/model/posts');
+
 // TinyLiquid engine config
 nodenews.engine = {
   context:      utils.newContext({
