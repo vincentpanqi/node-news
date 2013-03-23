@@ -31,7 +31,8 @@
     "mysql":        "~2.0",
     "moment":       "~2.0",
     "connect-redis":"~1.4",
-    "debug":        "~0.7"
+    "debug":        "~0.7",
+    "validator":    "~0.4"
   },
   "scripts": {
     "test":         "mocha -t 5000"
