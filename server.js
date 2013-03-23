@@ -6,11 +6,15 @@ var express = require('express');
 var RedisStore = require('connect-redis')(express);
 var expressLiquid = require('express-liquid');
 var debug = require('debug')('nodenews:');
+var define = require('./lib/define');
 var utils = require('./lib/utils');
 
 
 // Global namespace
-var nodenews = global.nodenews = {config: exports};
+var nodenews = global.nodenews = {
+  define: define,
+  utils:  utils
+};
 
 // Config
 var config = nodenews.config = utils.loadConfig();
