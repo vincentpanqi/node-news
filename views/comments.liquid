@@ -1,0 +1,22 @@
+{% include "header" %}
+
+{% paginate comments by 30 %}
+  <!-- News List -->
+  <div class="news">
+  {% for comment in comments %}
+  <div class="item">
+    <a href="/user/{{comment.user}}" class="user">by {{comment.user}}</a>
+    <span class="time">{{comment.timestamp | format_time}}</span> |
+    <a href="/posts/{{comment.post_id}}/{{comment.id}}">link</a> |
+    <a href="/posts/{{comment.post_id}}{% if comment.parent_id > 0 %}/{{comment.parent_id}}{% endif %}" class="link">parent</a> |
+    on: <a href="/posts/{{comment.post_id}}">{{comment.post.title}}</a>
+    <br><span class="text">{{comment.content}}</span>
+  </div>
+    {% if forloop.last %}<a href="/comments?p={{query_page | plus: 1}}" class="more">More</a>{% endif %}
+  {% else %}
+    Did not yield any results.
+  {% endfor %}
+  </div>
+{% endpaginate %}
+
+{% include "footer" %}

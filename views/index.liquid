@@ -8,7 +8,7 @@
     <span class="index">{{query_page | minus: 1 | times: 30 | plus: forloop.index}}.</span>
     <a href="{% if post.url %}{{post.url | escape}}{% else %}/posts/{{post.id}}{% endif %}" target="_blank" class="title">{{post.title | escape}}</a><br>
     {% if post.content %}<span class="text">{{post.content | truncate: 60}}{% if post.content.length > 60 %}...{% endif %}</span><br>{% endif %}
-    <span class="user">by {{post.user}}</span>
+    <a href="/user/{{post.user}}" class="user">by {{post.user}}</a>
     <span class="time">{{post.timestamp | format_time}}</span> |
     <a href="/posts/{{post.id}}" class="discuss">{% if post.comment > 0 %}{{post.comment}} comment{% else %}discuss{% endif %}</a>
   </div>

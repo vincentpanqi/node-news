@@ -67,6 +67,9 @@ a:hover {
 .news .item {
   margin: 10px 0;
 }
+.news .item a, .news .item a:visited {
+  color: #828282;
+}
 .news .item .index {
   display: inline-block;
   width: 20px;
@@ -91,6 +94,9 @@ a:hover {
 }
 .news .item .discuss {
   color: #828282;
+}
+.news .item .text {
+  color: #000;
 }
 .news .more {
   display: inline-block;
