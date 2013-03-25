@@ -1,0 +1,18 @@
+{% include "header" %}
+
+{% paginate leaders by 20 %}
+  <!-- News List -->
+  <div class="leaders">
+  {% for leader in leaders %}
+  <div class="item">
+    <span class="index">{{query_page | minus: 1 | times: 30 | plus: forloop.index}}.</span>
+    <a href="/user/{{leader.user}}" class="user">{{leader.user}}</a>
+    <span class="count">{{leader.count}}</a>
+  </div>
+  {% else %}
+    Did not yield any results.
+  {% endfor %}
+  </div>
+{% endpaginate %}
+
+{% include "footer" %}
