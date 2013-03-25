@@ -23,16 +23,17 @@
     "node":         ">= 0.6.0"
   },
   "dependencies":	{
-    "bright-flow":  "*",
-    "tinyliquid":   "0.2.x",
-    "xss":          "~0.0.3",
-    "express":      "~3.1",
-    "redis":        "~0.8",
-    "mysql":        "~2.0",
-    "moment":       "~2.0",
-    "connect-redis":"~1.4",
-    "debug":        "~0.7",
-    "validator":    "~0.4"
+    "bright-flow":    "*",
+    "tinyliquid":     "0.2.x",
+    "express-liquid": "0.2.x",
+    "xss":            "~0.0.3",
+    "express":        "~3.1",
+    "redis":          "~0.8",
+    "mysql":          "~2.0",
+    "moment":         "~2.0",
+    "connect-redis":  "~1.4",
+    "debug":          "~0.7",
+    "validator":      "~0.4"
   },
   "scripts": {
     "test":         "mocha -t 5000"
