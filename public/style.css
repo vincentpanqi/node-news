@@ -3,6 +3,7 @@ body {
   max-width: 980px;
   margin: 0 auto;
   font-size: 11pt;
+  text-shadow: 1px 1px 8px #CCC;
 }
 .clear {
   display: inline-block;
